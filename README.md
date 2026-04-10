@@ -138,6 +138,75 @@ AppointHeal/
 └── styles.css                  # Global stylesheet
 ```
 
+## Database Summary
+
+The `appointheal` database has 9 tables. Here is what each one does:
+
+| Table | Purpose |
+|---|---|
+| `doctor` | Stores doctor profiles (name, specialization, phone, email) |
+| `generaldoctor` | Extra info for general doctors (service hours) |
+| `surgeondoctor` | Extra info for surgeons (surgery specialty) |
+| `doctor_available_days` | Which days a doctor is available |
+| `doctor_time` | What time slots a doctor has and if they are booked |
+| `patient` | Stores patient profiles |
+| `appointment` | Links a patient to a doctor with day, time, and status |
+| `apply` | Links patients to appointments they applied for |
+| `treatedby` | Records which doctor treated which patient |
+
+### How to Add a New Doctor
+
+**Step 1: Insert into `doctor`**
+```sql
+INSERT INTO doctor (Name, Specialize, Phone, Email)
+VALUES ('Dr. Rahim', 'Cardiology', '01712345678', 'rahim@clinic.com');
+```
+
+**Step 2: Add doctor type (pick one)**
+```sql
+-- For a general doctor:
+INSERT INTO generaldoctor (DID, ServiceHour)
+VALUES (LAST_INSERT_ID(), '9AM - 5PM');
+
+-- For a surgeon:
+INSERT INTO surgeondoctor (DID, SurgerySpecialty)
+VALUES (LAST_INSERT_ID(), 'Cardiac Surgery');
+```
+
+**Step 3: Add available days**
+```sql
+INSERT INTO doctor_available_days (DID, days) VALUES (5, 'Monday');
+INSERT INTO doctor_available_days (DID, days) VALUES (5, 'Wednesday');
+```
+
+**Step 4: Add time slots**
+```sql
+INSERT INTO doctor_time (DID, time) VALUES (5, '09:00:00');
+INSERT INTO doctor_time (DID, time) VALUES (5, '10:00:00');
+```
+
+### How to Edit Available Days
+```sql
+-- Delete the old day first, then add the new one
+DELETE FROM doctor_available_days WHERE DID = 5 AND days = 'Monday';
+INSERT INTO doctor_available_days (DID, days) VALUES (5, 'Tuesday');
+```
+
+### How to Edit Time Slots
+```sql
+-- Remove old slot and add a new one
+DELETE FROM doctor_time WHERE DID = 5 AND time = '09:00:00';
+INSERT INTO doctor_time (DID, time) VALUES (5, '08:00:00');
+
+-- Mark a slot as booked
+UPDATE doctor_time SET isBooked = 1 WHERE DID = 5 AND time = '10:00:00';
+
+-- Free up a slot after cancellation
+UPDATE doctor_time SET isBooked = 0 WHERE DID = 5 AND time = '10:00:00';
+```
+
+---
+
 ---
 
 ## Academic Disclaimer
