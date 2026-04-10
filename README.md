@@ -216,5 +216,4 @@ This project was developed as an academic exercise to demonstrate practical skil
 ---
 ---
 
----
 *Built with HTML, CSS, PHP & MySQL*
