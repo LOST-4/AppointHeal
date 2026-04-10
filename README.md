@@ -214,5 +214,7 @@ UPDATE doctor_time SET isBooked = 0 WHERE DID = 5 AND time = '10:00:00';
 This project was developed as an academic exercise to demonstrate practical skills in database management and web development. It is not intended for production use without further security hardening.
 
 ---
+---
 
+---
 *Built with HTML, CSS, PHP & MySQL*
